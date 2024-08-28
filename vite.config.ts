@@ -15,5 +15,5 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3000,
   },
-  base: '/iot_fe',
+  base: '/iot_fe/',
 });
