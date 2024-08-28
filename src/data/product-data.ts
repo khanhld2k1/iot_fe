@@ -1,4 +1,3 @@
-import { LinearProgressProps } from '@mui/material';
 
 export interface ProductItem {
   id?: string;

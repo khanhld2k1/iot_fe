@@ -2,7 +2,6 @@ import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 import VisitorInsightsChart from './VisitorInsightsChart';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import EChartsReactCore from 'echarts-for-react/lib/core';
-import { visitorInsightsData } from 'data/chart-data/visitor-insights';
 import axios from 'axios';
 
 

@@ -1,4 +1,4 @@
-import { Chip, LinearProgress, TableCell, TableRow } from '@mui/material';
+import { Chip, TableCell, TableRow } from '@mui/material';
 import { ProductItem } from 'data/product-data';
 import { ReactElement } from 'react';
 

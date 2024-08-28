@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Chip,
   Paper,
@@ -7,18 +7,21 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  Typography,
   TableContainer,
   TablePagination,
   CircularProgress,
 } from '@mui/material';
-import { productTableRows } from 'data/product-data';
-import ProductItemRow from './ProductItemRow';
 import SimpleBar from 'simplebar-react';
 import axios from 'axios';
 
 const TopProducts = (): React.ReactElement => {
-  const [data, setData] = useState([]); // State to hold the fetched data
+  interface ProductItem {
+    id?: string;
+    timestamp: number;
+    slottype: string;
+    slotleft: number;
+  }
+  const [data, setData] = useState<ProductItem[]>([]); // State to hold the fetched data
   const [loading, setLoading] = useState(true); // State for loading indicator
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4); // Set rows per page to 4
@@ -54,9 +57,6 @@ const TopProducts = (): React.ReactElement => {
   // Calculate the rows to display on the current page
   const displayedRows = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-  const showDataBtn = ()=>{
-    console.log(displayedRows)
-  }
   return (
     <Paper sx={{ p: { xs: 4, sm: 8 }, height: 1 }}>
       {loading ? (
