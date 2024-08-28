@@ -1,5 +1,5 @@
 import { lazy, Suspense, ReactElement, PropsWithChildren } from 'react';
-import { Outlet, RouteObject, RouterProps, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouteObject, RouterProps, createBrowserRouter, Router } from 'react-router-dom';
 
 import PageLoader from 'components/loading/PageLoader';
 import Splash from 'components/loading/Splash';
@@ -76,6 +76,8 @@ const options: { basename: string } = {
   basename: '/nickelfox',
 };
 
-const router: Partial<RouterProps> = createBrowserRouter(routes, options);
+// const router: Partial<RouterProps> = createBrowserRouter(routes, options);
+// const router: Router = createBrowserRouter(routes, options);
+const router = createBrowserRouter(routes, options);
 
 export default router;
