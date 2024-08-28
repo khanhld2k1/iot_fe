@@ -44,7 +44,7 @@ const TopProducts = (): React.ReactElement => {
   }, []);
 
   // Handle page change
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 
