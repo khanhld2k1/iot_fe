@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { Link, List, Toolbar } from '@mui/material';
-import navItems from 'data/nav-items';
+// import navItems from 'data/nav-items';
 import SimpleBar from 'simplebar-react';
-import NavItem from './NavItem';
+// import NavItem from './NavItem';
 import { drawerCloseWidth, drawerOpenWidth } from '..';
 import Image from 'components/base/Image';
 import logoWithText from '/Logo-with-text.png';
@@ -46,9 +46,9 @@ const Sidebar = ({ open }: { open: boolean }): ReactElement => {
             justifyContent: 'space-between',
           }}
         >
-          {navItems.map((navItem) => (
+          {/* {navItems.map((navItem) => (
             <NavItem key={navItem.id} navItem={navItem} open={open} />
-          ))}
+          ))} */}
         </List>
       </SimpleBar>
     </>

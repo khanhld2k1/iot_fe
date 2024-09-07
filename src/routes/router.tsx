@@ -8,16 +8,11 @@ import paths from './paths';
 
 const App = lazy<() => ReactElement>(() => import('App'));
 
-const MainLayout = lazy<({ children }: PropsWithChildren) => ReactElement>(
-  () => import('layouts/main-layout'),
-);
 const AuthLayout = lazy<({ children }: PropsWithChildren) => ReactElement>(
   () => import('layouts/auth-layout'),
 );
 
 const Dashboard = lazy<() => ReactElement>(() => import('pages/dashboard/Dashboard'));
-const Login = lazy<() => ReactElement>(() => import('pages/authentication/Login'));
-const SignUp = lazy<() => ReactElement>(() => import('pages/authentication/SignUp'));
 const ErrorPage = lazy<() => ReactElement>(() => import('pages/error/ErrorPage'));
 
 const routes: RouteObject[] = [
@@ -31,11 +26,11 @@ const routes: RouteObject[] = [
       {
         path: paths.home,
         element: (
-          <MainLayout>
+          // <MainLayout>
             <Suspense fallback={<PageLoader />}>
               <Outlet />
             </Suspense>
-          </MainLayout>
+          // </MainLayout>
         ),
         children: [
           {
@@ -53,16 +48,6 @@ const routes: RouteObject[] = [
             </Suspense>
           </AuthLayout>
         ),
-        children: [
-          {
-            path: paths.login,
-            element: <Login />,
-          },
-          {
-            path: paths.signup,
-            element: <SignUp />,
-          },
-        ],
       },
     ],
   },
@@ -75,9 +60,6 @@ const routes: RouteObject[] = [
 const options: { basename: string } = {
   basename: '/iot_fe',
 };
-
-// const router: Partial<RouterProps> = createBrowserRouter(routes, options);
-// const router: Router = createBrowserRouter(routes, options);
 const router = createBrowserRouter(routes, options);
 
 export default router;

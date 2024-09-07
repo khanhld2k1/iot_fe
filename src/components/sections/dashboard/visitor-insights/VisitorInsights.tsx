@@ -1,25 +1,43 @@
-import { Box, Button, Paper, Stack, Typography } from '@mui/material';
+import { Paper, Stack, Typography } from '@mui/material';
 import VisitorInsightsChart from './VisitorInsightsChart';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import EChartsReactCore from 'echarts-for-react/lib/core';
 import axios from 'axios';
+import SimpleBar from 'simplebar-react';
 
+interface DataItem {
+  EntryTime: number | null;
+  ExitTime: number | null;
+  SlotLeft: number;
+}
 
 const VisitorInsights = (): ReactElement => {
   const chartRef = useRef<EChartsReactCore | null>(null);
-  const [chartData, setChartData] = useState<any>(null); // State to hold the API data
+  const [chartData, setChartData] = useState<any>(null);
 
   useEffect(() => {
-    // Function to fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://dummyjson.com/c/ce5a-c71d-4ffb-9cd5'); // Replace with your API endpoint
-        const data = response.data;
+        const response = await axios.get('https://dummyjson.com/c/f40d-8a58-47d2-af29'); // api/ParkingTrack
+        const data: DataItem[] = response.data;
 
-        // Assuming the API returns an array of objects with 'timestamp' and 'slotLeft' properties
+        const hours = Array(24).fill(0);  // Sum of SlotLeft for each hour
+        const counts = Array(24).fill(0); // Count of entries per hour
+
+        data.forEach((item: DataItem) => {
+          const timestamp = item.EntryTime != null ? item.EntryTime : item.ExitTime;
+          if (timestamp != null) {
+            const hour = new Date(timestamp).getHours(); // Convert epoch time to hours
+            hours[hour] += item.SlotLeft;  // Sum up SlotLeft for the hour
+            counts[hour]++;                // Increment the count for that hour
+          }
+        });
+
+        const averages = hours.map((total, i) => (counts[i] > 0 ? total / counts[i] : 0));
+
         const formattedData = {
-          time: data.map((item: any) => item.timestamp),
-          'Slot Left': data.map((item: any) => item.slotleft),
+          time: Array.from({ length: 24 }, (_, i) => `${i % 12 || 12} ${i < 12 ? 'AM' : 'PM'}`), // X-axis labels
+          'Slot Left': averages, // Y-axis data for Slot Left averages
         };
 
         setChartData(formattedData);
@@ -44,7 +62,7 @@ const VisitorInsights = (): ReactElement => {
   }, [chartRef]);
 
   return (
-    <Paper sx={{ p: { xs: 4, sm: 8 }, height: 1 }}>
+    <Paper sx={{ p: { xs: 4, sm: 8 }, height: 1 }} component={SimpleBar}>
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -54,46 +72,12 @@ const VisitorInsights = (): ReactElement => {
         mb={6}
       >
         <Typography variant="h4" color="common.white">
-          Visitor Insights
+          Chart
         </Typography>
-        <Button
-          variant="text"
-          disableRipple
-          startIcon={
-            <Box
-              sx={{
-                width: 5,
-                height: 5,
-                bgcolor: 'warning.main',
-                borderRadius: 400,
-              }}
-            />
-          }
-          sx={{
-            justifyContent: 'flex-start',
-            px: 4,
-            py: 2,
-            borderRadius: 1,
-            alignItems: 'center',
-            fontSize: 'body2.fontSize',
-            gap: 1,
-            color: 'text.disabled',
-            bgcolor: 'background.default',
-            cursor: 'default',
-            '&:hover': {
-              bgcolor: 'background.default',
-            },
-            '& .MuiButton-startIcon': {
-              mx: 0,
-            },
-          }}
-        >
-          New Visitors
-        </Button>
       </Stack>
       <VisitorInsightsChart
         chartRef={chartRef}
-        data={chartData} // Pass the fetched data to the chart
+        data={chartData}
         sx={{ height: '342px !important', flexGrow: 1 }}
       />
     </Paper>

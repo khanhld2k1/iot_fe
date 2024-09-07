@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Chip,
   Paper,
@@ -12,30 +12,54 @@ import {
   CircularProgress,
 } from '@mui/material';
 import SimpleBar from 'simplebar-react';
+import axios from 'axios';
 
-interface ParkingInput {
-  ParkingID: number;
-  SlotID: number;
-  EntryTime: number;
-  ExitTime: number;
-}
-const TopProducts = (
-  {parkingData, loading}: {parkingData:ParkingInput[]; loading:boolean}
-): React.ReactElement => {
+const ParkingSlot = ({handleSlotChange}:{handleSlotChange:(data: any) => void;}): React.ReactElement => {
+  interface SlotStatus {
+    SlotID:number;
+    SlotPosition: number;
+    Status: number;
+  }
+  const [data, setData] = useState<SlotStatus[]>([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4); // Set rows per page
 
+  // Fetch data from API
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get('https://dummyjson.com/c/bf63-47f3-4fe5-be6b'); // api/ParkingSlot
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to the first page
+    setPage(0);
   };
 
-  const displayedRows = parkingData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const displayedRows = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
+
+  const filterAvalibleSlots = data.filter(slot => slot.Status === 0);
+  useEffect(() => {
+    handleSlotChange(filterAvalibleSlots.length);
+  }, [filterAvalibleSlots, handleSlotChange]);
+
+  useEffect
   return (
     <Paper sx={{ p: { xs: 4, sm: 8 }, height: 1 }}>
       {loading ? (
@@ -46,24 +70,20 @@ const TopProducts = (
             <Table sx={{ minWidth: 440 }}>
               <TableHead>
                 <TableRow>
-                  <TableCell align="left">#</TableCell>
-                  <TableCell align="left">Slot ID</TableCell>
-                  <TableCell align="left">Time Stamp</TableCell>  
-                  <TableCell align="left">Slot Type</TableCell>
+                  <TableCell align="left">Slot Position</TableCell>
+                  <TableCell align="left">Slot Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedRows.map((product, index) => (
-                  <TableRow key={product.ParkingID}>
-                    <TableCell align="left">{index + 1 + page * rowsPerPage}</TableCell>
-                    <TableCell align="left">{product.SlotID}</TableCell>
+                {displayedRows.map((product) => (
+                  <TableRow key={product.SlotID}>
                     <TableCell align="left">
-                      {new Date(product.EntryTime == null ? product.ExitTime : product.EntryTime).toLocaleString()}
+                      {product.SlotPosition}
                     </TableCell>
                     <TableCell align="left">
                       <Chip
-                      label={`${product.EntryTime == null ? "OUT" : "IN"}`}
-                      color={product.EntryTime === null ? "success" : "warning"}
+                      label={`${product.Status == 1 ? `Parked` : `Empty`}`}
+                      color={product.Status == 1 ? "warning" : "success"}
                       variant="outlined"
                       size="medium"
                       />
@@ -76,7 +96,7 @@ const TopProducts = (
 
           <TablePagination
             component="div"
-            count={parkingData.length} 
+            count={data.length} 
             page={page} 
             onPageChange={handleChangePage} 
             rowsPerPage={rowsPerPage} 
@@ -89,4 +109,4 @@ const TopProducts = (
   );
 };
 
-export default TopProducts;
+export default ParkingSlot;

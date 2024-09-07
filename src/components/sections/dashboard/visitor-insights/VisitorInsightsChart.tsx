@@ -11,8 +11,11 @@ import {
 import { ReactElement, useMemo } from 'react';
 
 type VisitorInsightsChartProps = {
-  chartRef: React.MutableRefObject<ReactEChart | null>;
-  data?: any;
+  chartRef: React.MutableRefObject<ReactEChart | null>; // Use correct ref type
+  data?: {
+    time: string[]; // Array of formatted time labels
+    'Slot Left': number[]; // Array of average slot values
+  };
   sx?: SxProps;
 };
 
@@ -26,11 +29,6 @@ const VisitorInsightsChart = ({
   ...rest
 }: VisitorInsightsChartProps): ReactElement => {
   const theme = useTheme();
-  
-  // Convert epoch time to 'HH:mm' format
-  const formattedTime = data?.time.map((timestamp: number) =>
-    new Date(timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  );
 
   const option: VisitorInsightsChartOptions = useMemo(
     () => ({
@@ -61,7 +59,7 @@ const VisitorInsightsChart = ({
         {
           type: 'category',
           boundaryGap: false,
-          data: formattedTime, // Use formatted time for x-axis labels
+          data: data?.time || [], // Use preformatted time for x-axis labels
           axisLine: {
             show: false,
           },
@@ -69,7 +67,6 @@ const VisitorInsightsChart = ({
             show: false,
           },
           axisLabel: {
-            formatter: (value: string) => value, // Display the formatted time directly
             padding: [10, 25, 10, 15],
             fontSize: theme.typography.body2.fontSize,
             fontWeight: theme.typography.fontWeightMedium as number,
@@ -81,7 +78,7 @@ const VisitorInsightsChart = ({
         {
           type: 'value',
           min: 0,
-          max: 4, // Set the y-axis range from 0 to 4
+          max: 4, // Set the y-axis range (adjust based on actual data)
           axisLine: {
             show: false,
           },
@@ -127,7 +124,7 @@ const VisitorInsightsChart = ({
           emphasis: {
             focus: 'series',
           },
-          data: data?.['Slot Left'], // Assuming data['Slot Left'] contains the y-axis values
+          data: data?.['Slot Left'] || [], // Use the average slot left values for y-axis
         },
       ],
     }),
@@ -136,5 +133,6 @@ const VisitorInsightsChart = ({
 
   return <ReactEChart ref={chartRef} echarts={echarts} option={option} {...rest} />;
 };
+
 
 export default VisitorInsightsChart;

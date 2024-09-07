@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Link, Stack, Button, Typography } from '@mui/material';
 import Image from 'components/base/Image';
-import errorSvg from 'assets/images/error/error.svg';
+// import errorSvg from 'assets/images/error/error.svg';
 import { rootPaths } from 'routes/paths';
 
 const ErrorPage = (): ReactElement => {
@@ -30,7 +30,7 @@ const ErrorPage = (): ReactElement => {
       </Typography>
       <Image
         alt="Not Found Image"
-        src={errorSvg}
+        // src={errorSvg}
         sx={{
           mx: 'auto',
           height: 260,

@@ -1,8 +1,16 @@
-import { Menu, Avatar, Button, Tooltip, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import { 
+  Menu, 
+  Avatar, 
+  Button, 
+  Tooltip, 
+  // MenuItem, 
+  // ListItemIcon, 
+  // ListItemText 
+} from '@mui/material';
 import IconifyIcon from 'components/base/IconifyIcon';
 import profile from 'assets/images/account/Profile.png';
 import { useState, MouseEvent, useCallback, ReactElement } from 'react';
-import userMenuItems from 'data/usermenu-items';
+// import userMenuItems from 'data/usermenu-items';
 
 const UserDropdown = (): ReactElement => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -65,7 +73,7 @@ const UserDropdown = (): ReactElement => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {userMenuItems.map((userMenuItem) => (
+        {/* {userMenuItems.map((userMenuItem) => (
           <MenuItem key={userMenuItem.id} onClick={handleUserClose}>
             <ListItemIcon
               sx={{
@@ -91,7 +99,7 @@ const UserDropdown = (): ReactElement => {
               {userMenuItem.title}
             </ListItemText>
           </MenuItem>
-        ))}
+        ))} */}
       </Menu>
     </>
   );
