@@ -1,0 +1,14 @@
+@media screen and (max-width: 768px) {
+  .slot-left-box {
+    order: 1
+  }
+  .parking {
+    order: 2;
+  }
+  .products {
+    order: 3;
+  }
+  .chart {
+    order: 4;
+  }
+}

@@ -7,6 +7,10 @@ import TopProducts from 'components/sections/dashboard/top-products/TopProducts'
 import ParkingSlot from './Parkingslot';
 import SlotleftBox from './SlotLeft';
 
+//#region  style
+import '../../assets/styles/dashboard.style.css';
+//endregion
+
 const Dashboard = (): ReactElement => {
   interface ParkingInput {
     ParkingID: number;
@@ -26,7 +30,7 @@ const Dashboard = (): ReactElement => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('https://dummyjson.com/c/f40d-8a58-47d2-af29'); // api/ParkingTrack
+        const response = await axios.get('http://127.0.0.1:5000/api/track'); // api/ParkingTrack
         setParkingData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -41,22 +45,23 @@ const Dashboard = (): ReactElement => {
   return (
     <>
       <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={3.5} style={{padding:"20px"}}>
-        <Box gridColumn={{ xs: 'span 12', lg: 'span 4' }}  order={{ xs: 0 }}>
+        <Box className={'parking'} gridColumn={{ xs: 'span 12', lg: 'span 4' }}  order={{ xs: 0 }}>
           <ParkingSlot handleSlotChange={handleSlotChange}/>
         </Box>
-        <Box gridColumn={{ xs: 'span 12', lg: 'span 6' }}  >
+        <Box className={'products'} gridColumn={{ xs: 'span 12', lg: 'span 6' }}  >
           <TopProducts 
             parkingData={parkingData}
             loading={loading}
           />
         </Box>
-        <Box 
+        <Box
+          className={'slot-left-box'}
           gridColumn={{ xs: 'span 12', lg: 'span 2' }}  
         >
           <SlotleftBox slotLeftNum={slotLeftNum} />
         </Box>
         
-        <Box gridColumn={{ xs: 'span 12', xl: 'span 12' }}>
+        <Box className={'chart'} gridColumn={{ xs: 'span 12', xl: 'span 12' }}>
           <VisitorInsights/>
         </Box>
       </Box>

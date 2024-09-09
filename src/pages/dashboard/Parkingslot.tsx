@@ -30,7 +30,8 @@ const ParkingSlot = ({handleSlotChange}:{handleSlotChange:(data: any) => void;})
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('https://dummyjson.com/c/bf63-47f3-4fe5-be6b'); // api/ParkingSlot
+        const response = await axios.get('http://127.0.0.1:5000/api/slots'); // api/ParkingSlot
+        console.log({response})
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -67,7 +68,7 @@ const ParkingSlot = ({handleSlotChange}:{handleSlotChange:(data: any) => void;})
       ) : (
         <>
           <TableContainer component={SimpleBar}>
-            <Table sx={{ minWidth: 440 }}>
+            <Table>
               <TableHead>
                 <TableRow>
                   <TableCell align="left">Slot Position</TableCell>

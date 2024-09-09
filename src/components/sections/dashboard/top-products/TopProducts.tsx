@@ -13,6 +13,11 @@ import {
 } from '@mui/material';
 import SimpleBar from 'simplebar-react';
 
+//#region  style
+import '../../../../assets/styles/topproducts.style.css';
+//endregion
+
+
 interface ParkingInput {
   ParkingID: number;
   SlotID: number;
@@ -43,21 +48,21 @@ const TopProducts = (
       ) : (
         <>
           <TableContainer component={SimpleBar}>
-            <Table sx={{ minWidth: 440 }}>
+            <Table className={'table'}>
               <TableHead>
                 <TableRow>
-                  <TableCell align="left">#</TableCell>
-                  <TableCell align="left">Slot ID</TableCell>
-                  <TableCell align="left">Time Stamp</TableCell>  
-                  <TableCell align="left">Slot Type</TableCell>
+                  <TableCell className={'hidden'} align="left">#</TableCell>
+                  <TableCell className={'text'} align="left">Slot ID</TableCell>
+                  <TableCell className={'text'} align="left">Time Stamp</TableCell>  
+                  <TableCell className={'text'} align="left">Slot Type</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {displayedRows.map((product, index) => (
                   <TableRow key={product.ParkingID}>
-                    <TableCell align="left">{index + 1 + page * rowsPerPage}</TableCell>
+                    <TableCell className={'hidden'} align="left">{index + 1 + page * rowsPerPage}</TableCell>
                     <TableCell align="left">{product.SlotID}</TableCell>
-                    <TableCell align="left">
+                    <TableCell className={'text'} align="left">
                       {new Date(product.EntryTime == null ? product.ExitTime : product.EntryTime).toLocaleString()}
                     </TableCell>
                     <TableCell align="left">
