@@ -1,0 +1,1 @@
+.table{min-width:440px}@media screen and (max-width: 768px){.table{min-width:unset}.table .hidden{display:none}.text{font-size:14px}}@media screen and (max-width: 768px){.slot-left-box{order:1}.parking{order:2}.products{order:3}.chart{order:4}}
